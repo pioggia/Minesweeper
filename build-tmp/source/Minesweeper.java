@@ -1,13 +1,31 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import de.bezier.guido.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class Minesweeper extends PApplet {
 
 
 
-import de.bezier.guido.*;
+
+
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs; //ArrayList of just the minesweeper buttons that are mined
 
-void setup ()
+public void setup ()
 {
     size(400, 400);
     textAlign(CENTER,CENTER);
@@ -104,193 +122,41 @@ public class MSButton
         {
             setLabel(str(countBombs(r, c)));
         }
+    }
+    public void draw () 
+    {    
+        if (marked)
+            fill(0);
+        else if( clicked && bombs.contains(this) ) 
+            fill(255,0,0);
+        else if(clicked)
+            fill( 200 );
         else 
-        {
-           if(row == 0)
-           {
-            if(col == 0)
-            {
-                if(isValid(row+1, col) == true && !bombs.contains(buttons[row+1][col])) //down
-                {
-                   mousepressed();
-                }
-                else if(isValid(row, col+1) == true && !bombs.contains(buttons[row][col+1])) //right
-                {
-                   mousepressed();
-                }
-                else if(isValid(row+1, col+1) == true && !bombs.contains(buttons[row+1][col+1])) //right down
-                {
-                   mousepressed();
-                }
-            }
-            else if(col == NUM_COLS)
-            {
-                if(isValid(row+1, col) == true && !bombs.contains(buttons[row+1][col])) //down
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col-1) == true && !bombs.contains(buttons[row][col-1])) //left
-                {
-                   mousepressed();
-                }
-                if(isValid(row+1, col-1) == true && !bombs.contains(buttons[row+1][col-1])) 
-                {
-                   mousepressed();
-                }
-            }
-            else
-            {
-                if(isValid(row+1, col) == true && !bombs.contains(buttons[row+1][col])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row+1, col-1) == true && !bombs.contains(buttons[row+1][col-1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row+1, col+1) == true && !bombs.contains(buttons[row+1][col+1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col-1) == true && !bombs.contains(buttons[row][col-1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col+1) == true && !bombs.contains(buttons[row][col+1])) 
-                {
-                   mousepressed();
-                }
-            }
-        }
-        else if(row == NUM_ROWS)
-        {
-            if(col == 0)
-            {
-                if(isValid(row-1, col) == true && !bombs.contains(buttons[row-1][col]))
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col+1) == true && !bombs.contains(buttons[row][col+1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col+1) == true && !bombs.contains(buttons[row-1][col+1])) 
-                {
-                   mousepressed();
-                }
-            }
-            else if(col == NUM_COLS)
-            {
-                if(isValid(row-1, col) == true && !bombs.contains(buttons[row-1][col])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col-1) == true && !bombs.contains(buttons[row][col-1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row-1, col-1) == true && !bombs.contains(buttons[row-1][col-1])) 
-                {
-                   mousepressed();
-                }
-            }
-            else 
-            {
-                if(isValid(row-1, col) == true && !bombs.contains(buttons[row-1][col])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row-1, col-1) == true && !bombs.contains(buttons[row-1][col-1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row-1, col+1) == true && !bombs.contains(buttons[row-1][col+1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col-1) == true && !bombs.contains(buttons[row][col-1])) 
-                {
-                   mousepressed();
-                }
-                if(isValid(row, col+1) == true && !bombs.contains(buttons[row][col+1])) 
-                {
-                   mousepressed();
-                }
-            }
-        }
-        else // middle buttons
-        {
-            if(isValid(row+1, col) == true && !bombs.contains(buttons[row+1][col])) //down
-            {
-               mousepressed();
-            }
-            else if(isValid(row, col+1) == true && !bombs.contains(buttons[row][col+1])) //right
-            {
-               mousepressed();
-            }
-            else if(isValid(row+1, col+1) == true && !bombs.contains(buttons[row+1][col+1])) //right down
-            {
-               mousepressed();
-            }
-            if(isValid(row, col-1) == true && !bombs.contains(buttons[row][col-1])) //left
-            {
-               mousepressed();
-            }
-            if(isValid(row-1, col) == true && !bombs.contains(buttons[row-1][col])) //above
-            {
-               mousepressed();
-            }
-            else if(isValid(row+1, col-1) == true && !bombs.contains(buttons[row+1][col-1])) //left down
-            {
-               mousepressed();
-            }
-            else if(isValid(row-1, col+1) == true && !bombs.contains(buttons[row-1][col+1])) //right above
-            {
-               mousepressed();
-            }
-            else if(isValid(row-1, col-1) == true && !bombs.contains(buttons[row-1][col-1])) //left above
-            {
-               mousepressed();
-            }
-        }
-        return numBombs;
-    }
-}
-}
-public void draw () 
-{    
-    if (marked)
-        fill(0);
-    else if( clicked && bombs.contains(this) ) 
-        fill(255,0,0);
-    else if(clicked)
-        fill( 200 );
-    else 
-        fill( 100 );
+            fill( 100 );
 
-    rect(x, y, width, height);
-    fill(0);
-    text(label,x+width/2,y+height/2);
-}
-public void setLabel(String newLabel)
-{
-    label = newLabel;
-}
-public boolean isValid(int r, int c)
-{
-    if(r<=NUM_ROWS && c<=NUM_ROWS)
-    {
-        return true;
+        rect(x, y, width, height);
+        fill(0);
+        text(label,x+width/2,y+height/2);
     }
-    return false;
-}
-public int countBombs(int row, int col)
-{
-    int numBombs = 0;
-    if(row == 0)
+    public void setLabel(String newLabel)
     {
-        if(col == 0)
+        label = newLabel;
+    }
+    public boolean isValid(int r, int c)
+    {
+        if(r<=NUM_ROWS && c<=NUM_ROWS)
         {
+            return true;
+        }
+        return false;
+    }
+    public int countBombs(int row, int col)
+    {
+        int numBombs = 0;
+        if(row == 0)
+        {
+            if(col == 0)
+            {
                 if(isValid(row+1, col) == true && bombs.contains(buttons[row+1][col])) //down
                 {
                     numBombs++;
@@ -440,3 +306,12 @@ public int countBombs(int row, int col)
 
 
 
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "Minesweeper" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
