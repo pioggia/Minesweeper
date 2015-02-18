@@ -66,16 +66,23 @@ public void draw ()
 }
 public boolean isWon()
 {
-  //your code here
   return false;
 }
 public void displayLosingMessage()
-{
-  //your code here
+{ 
+    background(16, 21, 23);
+    textSize(15);
+    stroke(255);
+    textAlign(CENTER);
+    text("hai perso", 200, 200);
 }
 public void displayWinningMessage()
 {
-  //your code here
+    background(23, 16, 19);
+    textSize(15);
+    stroke(255);
+    textAlign(CENTER);
+    text("hai vinto", 200, 200);
 }
 
 public class MSButton
@@ -127,49 +134,49 @@ public class MSButton
         {
           if (isValid(r+1, c) == true && !bombs.contains(buttons[r+1][c])) //down
           {
-            bombs[r+1][c].mousepressed();
+            buttons[r+1][c].mousePressed();
           } else if (isValid(r, c+1) == true && !bombs.contains(buttons[r][c+1])) //right
           {
-            mousepressed();
+            mousePressed();
           } else if (isValid(r+1, c+1) == true && !bombs.contains(buttons[r+1][c+1])) //right down
           {
-            mousepressed();
+            mousePressed();
           }
         } else if (c == NUM_COLS)
         {
           if (isValid(r+1, c) == true && !bombs.contains(buttons[r+1][c])) //down
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c-1) == true && !bombs.contains(buttons[r][c-1])) //left
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r+1, c-1) == true && !bombs.contains(buttons[r+1][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
         } else
         {
           if (isValid(r+1, c) == true && !bombs.contains(buttons[r+1][c])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r+1, c-1) == true && !bombs.contains(buttons[r+1][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r+1, c+1) == true && !bombs.contains(buttons[r+1][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c-1) == true && !bombs.contains(buttons[r][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c+1) == true && !bombs.contains(buttons[r][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
         }
       } else if (r == NUM_ROWS)
@@ -178,84 +185,83 @@ public class MSButton
         {
           if (isValid(r-1, c) == true && !bombs.contains(buttons[r-1][c]))
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c+1) == true && !bombs.contains(buttons[r][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c+1) == true && !bombs.contains(buttons[r-1][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
         } else if (c == NUM_COLS)
         {
           if (isValid(r-1, c) == true && !bombs.contains(buttons[r-1][c])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c-1) == true && !bombs.contains(buttons[r][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r-1, c-1) == true && !bombs.contains(buttons[r-1][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
         } else 
         {
           if (isValid(r-1, c) == true && !bombs.contains(buttons[r-1][c])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r-1, c-1) == true && !bombs.contains(buttons[r-1][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r-1, c+1) == true && !bombs.contains(buttons[r-1][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c-1) == true && !bombs.contains(buttons[r][c-1])) 
           {
-            mousepressed();
+            mousePressed();
           }
           if (isValid(r, c+1) == true && !bombs.contains(buttons[r][c+1])) 
           {
-            mousepressed();
+            mousePressed();
           }
         }
       } else // middle buttons
       {
         if (isValid(r+1, c) == true && !bombs.contains(buttons[r+1][c])) //down
         {
-          mousepressed();
+          mousePressed();
         } else if (isValid(r, c+1) == true && !bombs.contains(buttons[r][c+1])) //right
         {
-          mousepressed();
+          mousePressed();
         } else if (isValid(r+1, c+1) == true && !bombs.contains(buttons[r+1][c+1])) //right down
         {
-          mousepressed();
+          mousePressed();
         }
         if (isValid(r, c-1) == true && !bombs.contains(buttons[r][c-1])) //left
         {
-          mousepressed();
+          mousePressed();
         }
         if (isValid(r-1, c) == true && !bombs.contains(buttons[r-1][c])) //above
         {
-          mousepressed();
+          mousePressed();
         } else if (isValid(r+1, c-1) == true && !bombs.contains(buttons[r+1][c-1])) //left down
         {
-          mousepressed();
+          mousePressed();
         } else if (isValid(r-1, c+1) == true && !bombs.contains(buttons[r-1][c+1])) //right above
         {
-          mousepressed();
+          mousePressed();
         } else if (isValid(r-1, c-1) == true && !bombs.contains(buttons[r-1][c-1])) //left above
         {
-          mousepressed();
+          mousePressed();
         }
       }
-      return numBombs;
     }
 }
 
