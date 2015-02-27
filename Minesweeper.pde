@@ -1,6 +1,4 @@
 
-
-
 import de.bezier.guido.*;
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
@@ -51,20 +49,20 @@ public boolean isWon()
   return false;
 }
 public void displayLosingMessage()
-{ 
-    background(16, 21, 23);
-    textSize(15);
-    stroke(255);
-    textAlign(CENTER);
-    text("hai perso", 200, 200);
+{
+  background(16, 21, 23);
+  textSize(15);
+  stroke(255);
+  textAlign(CENTER);
+  text("hai perso", 200, 200);
 }
 public void displayWinningMessage()
 {
-    background(23, 16, 19);
-    textSize(15);
-    stroke(255);
-    textAlign(CENTER);
-    text("hai vinto", 200, 200);
+  background(23, 16, 19);
+  textSize(15);
+  stroke(255);
+  textAlign(CENTER);
+  text("hai vinto", 200, 200);
 }
 
 public class MSButton
@@ -102,49 +100,69 @@ public class MSButton
     if (keyPressed == true) 
     {
       marked = !marked;
-    } else if (bombs.contains(this))
+    } 
+    else if (bombs.contains(this))
     {
       displayLosingMessage();
-    } else if (countBombs(r, c)>0)
+    } 
+    else if (countBombs(r, c)>0)
     {
-      setLabel(str(countBombs(r, c))); // refer to recursive buttons in processing
-    } else 
-    
+      setLabel(str(countBombs(r, c))); 
     }
-}
-
-    public void draw() 
-    {    
-      if (marked)
-        fill(0);
-      else if ( clicked && bombs.contains(this) ) 
-        fill(255, 0, 0);
-      else if (clicked)
-        fill( 200 );
-      else 
-        fill( 100 );
-
-      rect(x, y, width, height);
+    else 
+    {
+        for(int a = r-1; a<=r+1; a++)
+        {
+            for(int b = c-1; b<=c+1; c++)
+            {
+                if(isValid(a, b) == true && buttons[a][b].isClicked() == false) // fix text offset, maybe an if statement somewhere throwing it off
+                {
+                    buttons[a][b].mousePressed();
+                }
+            }
+        }
+    }
+  }
+  public void draw() 
+  {    
+    if (marked)
       fill(0);
-      text(label, x+width/2, y+height/2);
-    }
-    public void setLabel(String newLabel)
+    else if ( clicked && bombs.contains(this) ) 
+      fill(255, 0, 0);
+    else if (clicked)
+      fill( 200 );
+    else 
+      fill( 100 );
+
+    rect(x, y, width, height);
+    fill(0);
+    text(label, x+width/2, (y+height/2)+6);
+  }
+  public void setLabel(String newLabel)
+  {
+    label = newLabel;
+  }
+  public boolean isValid(int r, int c)
+  {
+    if (r<=NUM_ROWS && c<=NUM_ROWS)
     {
-      label = newLabel;
+      return true;
     }
-    public boolean isValid(int r, int c)
+    return false;
+  }
+  public int countBombs(int row, int col)
+  {
+    int numBombs = 0;
+    for (int a = row-1; a<=row+1; a++)
     {
-      if (r<=NUM_ROWS && c<=NUM_ROWS)
+      for (int b = col-1; b<=col+1; b++)
       {
-        return true;
+        if (isValid(a, b) == true && bombs.contains(buttons[a][b]))
+        {
+          numBombs++;
+        }
       }
-      return false;
     }
-    public int countBombs(int row, int col)
-    {
-      int numBombs = 0;
-      }
+    return numBombs;
+  }
 }
-
-
-
