@@ -2,9 +2,9 @@
 import de.bezier.guido.*;
 public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
+public final static int MINE_FIELD = (int)(Math.random()*50+30);
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> bombs; //ArrayList of just the minesweeper buttons that are mined
-
 void setup ()
 {
   size(400, 400);
@@ -25,8 +25,7 @@ void setup ()
 }
 public void setBombs()
 {
-  int field = (int)(Math.random()*50+150);
-  for (int i = 0; i<field; i++)
+  for (int i = 0; i<MINE_FIELD; i++)
   {
     int x = (int)(Math.random()*20);
     int y = (int)(Math.random()*20);
@@ -46,23 +45,34 @@ public void draw ()
 }
 public boolean isWon()
 {
-  return false;
+  for(int i=0; i<bombs.size(); i++)
+  {
+    if(bombs.get(i).isMarked() == false)
+    {
+      return false;
+    }
+  }
+  return true;
 }
 public void displayLosingMessage()
 {
-  background(16, 21, 23);
-  textSize(15);
-  stroke(255);
-  textAlign(CENTER);
-  text("hai perso", 200, 200);
+  for(int i = 0; i<bombs.size(); i++)
+  {
+    bombs.get(i).clicked = true;
+  }
+  String perso = new String ("hai perso");
+  for(int i = 0; i<perso.length(); i++)
+  {
+    buttons[int(NUM_ROWS/2)][3+i].setLabel(perso.substring(i, i+1));
+  }
 }
 public void displayWinningMessage()
 {
-  background(23, 16, 19);
-  textSize(15);
-  stroke(255);
-  textAlign(CENTER);
-  text("hai vinto", 200, 200);
+  String vinto = new String("hai vinto");
+  for(int i = 0; i<vinto.length(); i++)
+  {
+    buttons[int(NUM_ROWS/2)][3+i].setLabel(vinto.substring(i, i+1));
+  }
 }
 
 public class MSButton
@@ -97,7 +107,7 @@ public class MSButton
   public void mousePressed ()
   {
     clicked = true;
-    if (keyPressed == true) 
+    if (mouseButton == RIGHT) // right click to flag a mine
     {
       marked = !marked;
     } 
@@ -111,15 +121,15 @@ public class MSButton
     }
     else 
     {
-        for(int a = r-1; a<=r+1; a++)
+        for (int a = r-1; a<=r+1; a++)
         {
-            for(int b = c-1; b<=c+1; c++)
-            {
-                if(isValid(a, b) == true && buttons[a][b].isClicked() == false) // fix text offset, maybe an if statement somewhere throwing it off
-                {
-                    buttons[a][b].mousePressed();
-                }
-            }
+           for (int b = c-1; b<=c+1; b++)
+           {
+               if (isValid(a, b) == true && buttons[a][b].isClicked() == false)
+              {
+                  buttons[a][b].mousePressed();
+              }
+           }
         }
     }
   }
@@ -136,7 +146,7 @@ public class MSButton
 
     rect(x, y, width, height);
     fill(0);
-    text(label, x+width/2, (y+height/2)+6);
+    text(label, x+width/2, y+height/2);
   }
   public void setLabel(String newLabel)
   {
