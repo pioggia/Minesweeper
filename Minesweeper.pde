@@ -4,7 +4,8 @@ public final static int NUM_ROWS = 20;
 public final static int NUM_COLS = 20;
 public final static int MINE_FIELD = (int)(Math.random()*50+30);
 private MSButton[][] buttons; //2d array of minesweeper buttons
-private ArrayList <MSButton> bombs; //ArrayList of just the minesweeper buttons that are mined
+private ArrayList <MSButton> bombs = new ArrayList <MSButton>(); //ArrayList of just the minesweeper buttons that are mined
+private boolean gameOver = false;
 void setup ()
 {
   size(400, 400);
@@ -20,7 +21,6 @@ void setup ()
       buttons[i][a] = new MSButton(i, a);
     }
   }
-  bombs = new ArrayList <MSButton>();
   setBombs();
 }
 public void setBombs()
@@ -34,20 +34,23 @@ public void setBombs()
       bombs.add(buttons[x][y]);
     }
   }
-  System.out.println(bombs.size() + " mines");
+  //System.out.println(bombs.size() + " mines");
 }
 
 public void draw ()
 {
   background( 0 );
-  if (isWon())
+  if (isWon() == true && gameOver == false) 
+  {
+    gameOver = true;
     displayWinningMessage();
+  }
 }
 public boolean isWon()
 {
   for(int i=0; i<bombs.size(); i++)
   {
-    if(bombs.get(i).isMarked() == false)
+    if(bombs.get(i).isClicked() == false && bombs.get(i).isMarked() == false)
     {
       return false;
     }
@@ -106,6 +109,10 @@ public class MSButton
 
   public void mousePressed ()
   {
+    if(gameOver == true) // cannot play after game is finished
+    {
+      return;
+    }
     clicked = true;
     if (mouseButton == RIGHT) // right click to flag a mine
     {
@@ -114,6 +121,7 @@ public class MSButton
     else if (bombs.contains(this))
     {
       displayLosingMessage();
+      gameOver = true;
     } 
     else if (countBombs(r, c)>0)
     {
